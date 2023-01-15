@@ -7,5 +7,5 @@
 
 #docker 공유폴더
 jenkins_SHARE/
-
 .idea/
+_build/
