@@ -6,7 +6,7 @@
 }
 </style>
 
-# Section 4: CI/CD Pipeline 구축
+# A40-Section 4: CI/CD Pipeline 구축
 
 - AWS Cloud 실습 환경 구성도
 - AWS EC2에 서비스 생성

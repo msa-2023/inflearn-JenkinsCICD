@@ -2,7 +2,7 @@
 Vagrant를 사용하지 않고, 직접 VM을 구성하셔도 됩니다. (VirtualBox or VMWare)
 Windows 10의 Docker Desktop은 Cluster 구성이 되지 않기 때문에, VM사용을 권장합니다.
 ```
- # K8S설치(강사제공)
+# ZZ-K8S설치(강사제공)
 ## 0. VirutalBox를 사용하기 위해 HyperV off
   - 관리자 모드로 cmd(terminal) 실행
   ```

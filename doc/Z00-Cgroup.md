@@ -6,7 +6,7 @@
 }
 </style>
 
-# Cgroup  정리
+# Z00-Cgroup  정리
 
 ## 1. 
 [원본-카카오](https://tech.kakao.com/2020/06/29/cgroup-driver/)

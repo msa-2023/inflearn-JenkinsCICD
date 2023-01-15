@@ -7,7 +7,7 @@
 </style>
 
 
-# Tomcat배포
+# A04-Tomcat배포
 Tomcat에 배포하기
 - Tomcat 서버는 로컬 Pc에 설치되어 있음
 - 로컬에 Tomcat이 설치되어 있어야 함

@@ -6,7 +6,7 @@
 }
 </style>
 
-# Section 4: CI/CD Pipeline 구축
+# A30-Section 4: CI/CD Pipeline 구축
 
 - Delivery Pipeline 사용
 - Jenkins Pipeline 구성

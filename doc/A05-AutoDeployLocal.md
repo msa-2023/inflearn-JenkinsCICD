@@ -7,7 +7,7 @@
 </style>
 
 
-# PollSCM
+# A05-PollSCM
 주기적인 배포 작업 (변경시, 일정 간격)
 
 Project > Configure > Build Triggers(빌드 유발)

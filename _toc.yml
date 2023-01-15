@@ -1,0 +1,26 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+format: jb-book
+root: intro
+parts:
+- caption: 강의정리
+  chapters:
+#  - file: doc/A01-DevOps서버환경구성.md
+  - file: doc/A01-DevOps서버환경구성-dockercompose.md
+  - file: doc/A02-JenkinsHelloWorld.md
+  - file: doc/A03-GitMavenBuild.md
+  - file: doc/A04-LocalTomcatDeploy.md
+  - file: doc/A05-AutoDeployLocal.md
+  - file: doc/A06-1DockerDeploy.md
+  - file: doc/A10-Section2-IaX.md
+  - file: doc/A20-JenkinsKubernetes.md
+  - file: doc/A30-Pipeline.md
+  - file: doc/A40-AwsDeploy.md
+  - file: doc/Z00-Cgroup.md
+  - file: doc/ZZ-kubernetes_install.md
+
+
+- caption: About Jupyter Book
+  chapters:
+  - url: https://executablebooks.org/en/latest/gallery.html
+    title: Gallery of Jupyter Books

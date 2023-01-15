@@ -6,7 +6,7 @@
 }
 </style>
 
-# RemoteDeploy
+# A06-RemoteDeploy
 
 Remote서버에 소스 배포
 

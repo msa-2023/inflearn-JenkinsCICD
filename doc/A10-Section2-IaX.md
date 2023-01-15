@@ -6,7 +6,7 @@
 }
 </style>
 
-# Infrastructure as Code
+# A10-Infrastructure as Code
 
 이론
 - Infrastructure as Code 개요와 Ansible의 이행
