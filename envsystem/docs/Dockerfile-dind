@@ -1,0 +1,42 @@
+FROM docker:dind  
+#LABEL maintainer="msa.myinno@gmail.com"
+
+#Time Zone 변경
+#ENV TZ=Asia/Seoul
+#RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+#curl install
+RUN apk add curl
+
+# ssh (https://www.cyberciti.biz/faq/how-to-install-openssh-server-on-alpine-linux-including-docker/)
+RUN set -x \
+  && apk add --no-cache openssh openrc \
+  && sed 's/#Port 22/Port 22/' -i /etc/ssh/sshd_config \
+  && sed 's/#AddressFamily any/AddressFamily any/' -i /etc/ssh/sshd_config \
+  && sed 's/#ListenAddress 0.0.0.0/ListenAddress 0.0.0.0/' -i /etc/ssh/sshd_config \
+  && sed 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' -i /etc/ssh/sshd_config \
+  && echo 'root:root' | chpasswd \
+  && ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa \
+  && mkdir -p /var/run/sshd
+
+#  && ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa \
+
+RUN rc-update add sshd 
+#RUN service sshd start 
+
+COPY ./dind_copy/Dockerfile-tomcat /root/.
+
+#RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh
+
+#CMD, ENTRYPOINT로 시작하면 docker가 시작안됨
+
+#RUN echo "echo 'myinno......' " >> /usr/local/bin/docker-entrypoint.sh1
+RUN echo "docker exec -it mydind /usr/sbin/sshd -D"  >> /usr/local/bin/docker-entrypoint.sh
+#RUN cat /usr/local/bin/docker-entrypoint.sh  >> /usr/local/bin/docker-entrypoint.sh1
+#RUN mv -f /usr/local/bin/docker-entrypoint.sh1 /usr/local/bin/docker-entrypoint.sh
+
+
+#EXPOSE 22 8083 2375 2376
+
+#CMD []
+ENTRYPOINT ["dockerd-entrypoint.sh"]

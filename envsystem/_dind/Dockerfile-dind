@@ -1,0 +1,5 @@
+FROM docker:20.10.5-dind
+
+#set password
+RUN echo 'root:root' |chpasswd
+EXPOSE 22 8080

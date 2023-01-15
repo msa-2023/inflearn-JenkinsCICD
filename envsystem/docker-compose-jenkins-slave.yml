@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+
+## jenkins-blueocean
+  jenkins-slave:
+    build:
+      context: jenkins-slave
+      dockerfile: Dockerfile_jenkins_slave
+    container_name: slave1     
+    privileged: true
+
+    networks:
+      - jenkins
+    networks:
+      default:
+        aliases:
+          - docker
+    ports:
+      - 2251:22
+    environment:
+      - container=docker
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1      
+      - TZ=Asia/Seoul
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/jenkins-slave/root:/root
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client
+    restart: on-failure
+

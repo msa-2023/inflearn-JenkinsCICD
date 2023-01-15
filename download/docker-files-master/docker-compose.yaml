@@ -1,0 +1,7 @@
+version: '3.3'
+
+services:
+  mysshserver:
+    build: .
+    expose:
+      - '22'

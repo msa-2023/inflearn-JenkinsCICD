@@ -1,0 +1,104 @@
+version: '2'
+
+services:
+  dind:
+    image: docker:dind
+    container_name: dind    
+    privileged: true
+    volumes:
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/var:/var/jenkins_home
+    ports:
+      - 2376:2376
+    networks:
+      - jenkins
+    networks:
+      default:
+        aliases:
+          - docker
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs 
+      - TZ=Asia/Seoul
+     
+## ---------------------------
+  jenkins-blueocean:
+    build: jenkins
+    container_name: jenkins  
+    #    command: /usr/sbin/sshd -D
+    mem_limit: 1024m
+    mem_reservation: 600m
+#    privileged: true
+#    networks:
+#      - jenkins
+#    networks:
+#      default:
+#        aliases:
+#          - docker
+    ports:
+      - 8099:8080
+      - 50000:50000
+      - 2201:22
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+      - JAVA_OPTS="-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true"
+#      - JAVA_OPTS="-Xmx700m"
+      - TZ=Asia/Seoul
+    volumes:
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/var:/var/jenkins_home
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/home:/home
+    restart: on-failure
+## ------------------------
+  workerap:
+    build:
+      context: worker
+      dockerfile: Dockerfile_worker
+    container_name: worker01    
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client      
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/worker_home:/home
+    ports:
+      - 2211:22
+      - 8091:8080
+    networks:
+      - jenkins
+    networks:
+      default:
+        aliases:
+          - docker
+    environment:
+      - container=docker
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1      
+      - TZ=Asia/Seoul
+ ## ------------------------  
+  ansible:
+    build:
+      context: ansible
+      dockerfile: Dockerfile_ansible
+    container_name: my-ansible    
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client      
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/ansible_home:/home
+    ports:
+      - 2205:22
+      - 8085:8080
+    networks:
+      - jenkins
+    networks:
+      default:
+        aliases:
+          - docker
+    environment:
+      - container=docker
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1      
+      - TZ=Asia/Seoul

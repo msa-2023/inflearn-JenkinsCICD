@@ -1,0 +1,59 @@
+FROM ubuntu:18.04   
+#FROM jenkins/jenkins:2.346.3-jdk11
+MAINTAINER myinno(msa.myinno@gmail.com)
+
+
+##1 Docker 설치(https://docs.docker.com/engine/install/ubuntu/)
+USER root
+RUN apt-get update && apt-get install -y ca-certificates gnupg lsb-release curl vim
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+RUN echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+RUN apt-get update && apt-get install -y docker-ce-cli
+
+##2 Docker 설치(기존 jenkins 파일 참조)
+#USER root
+#RUN apt-get update && apt-get install -y lsb-release
+#RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
+#https://download.docker.com/linux/debian/gpg
+#RUN echo "deb [arch=$(dpkg --print-architecture) \
+#signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+#https://download.docker.com/linux/debian \
+#$(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+#RUN apt-get update && apt-get install -y docker-ce-cli
+
+
+#Time Zone 변경
+ENV TZ=Asia/Seoul
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# SSH 설치
+RUN apt-get update && apt-get install -y openssh-server 
+
+# network Tool
+RUN apt-get update && apt-get install -y net-tools 
+
+RUN mkdir /var/run/sshd
+
+#set password
+RUN echo 'root:root' |chpasswd
+
+#replace sshd_config
+#sed는 replace시켜주는 구문인데 PermitRootLogin과 yes로, UsePAM을 주석처리하는 것이다.
+RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
+
+#make .ssh
+RUN mkdir /root/.ssh
+
+
+RUN apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+COPY ./Dockerfile-tomcat /root/.
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+
+
+

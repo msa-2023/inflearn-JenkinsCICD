@@ -1,0 +1,1 @@
+docker build -t ssh-docker:1.0 -f Dockerfile-sshdocker .

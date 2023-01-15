@@ -1,0 +1,95 @@
+version: '2'
+
+services:
+  dind:
+    image: docker:dind
+    container_name: dind    
+    privileged: true
+    volumes:
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/var:/var/jenkins_home
+    ports:
+      - 2376:2376
+    networks:
+      - jenkins
+    networks:
+      default:
+        aliases:
+          - docker
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs 
+  ssh-docker2:
+    build:
+      context: docs
+      dockerfile: Dockerfile-dind
+    container_name: dind2
+    privileged: true
+    networks:
+      - jenkins
+    networks:
+      default:
+        aliases:
+          - docker
+    environment:
+#      - DOCKER_TLS_CERTDIR=/certs      
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+    volumes:
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/var:/var/jenkins_home
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/sshhome:/home         
+    ports:
+      - 2204:22
+      - 8084:8080
+
+     
+## jenkins-blueocean
+  jenkins-blueocean:
+    build: jenkins
+#    command: /usr/sbin/sshd -D
+    mem_limit: 1024m
+    mem_reservation: 600m
+#    privileged: true
+#    networks:
+#      - jenkins
+#    networks:
+#      default:
+#        aliases:
+#          - docker
+    ports:
+      - 8099:8080
+      - 50000:50000
+      - 2201:22
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+      - JAVA_OPTS="-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true"
+#      - JAVA_OPTS="-Xmx700m"
+      - TZ=Asia/Seoul
+    volumes:
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/var:/var/jenkins_home
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/home:/home
+    restart: on-failure
+
+## docker + SSH + Ubuntu
+  ssh-docker:
+    build: UbuntuSshd
+    container_name: ssh-docker
+    command: /usr/sbin/sshd -D
+#    mem_limit: 550M
+    privileged: true
+#    networks:
+#      - jenkins
+    ports:
+      - '2202:22'
+      - '8083:8080'
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+    volumes:
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/sshhome:/home      

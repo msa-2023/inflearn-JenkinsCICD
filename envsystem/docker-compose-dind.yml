@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+
+  docker-dind:
+#    image: docker:dind
+    build:
+      context: docs
+      dockerfile: Dockerfile-dind
+    container_name: ssh-docker2
+#    mem_limit: 200m
+#    mem_reservation: 150m
+    privileged: true
+    networks:
+      - jenkins
+    networks:
+      default:
+        aliases:
+          - docker
+    environment:
+#      - DOCKER_TLS_CERTDIR=/certs      
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+    volumes:
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/sshhome:/home         
+    ports:
+      - 22376:2376
+      - 2204:22
+      - 8084:8080
+
+      

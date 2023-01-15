@@ -1,0 +1,8 @@
+FROM mydind:1.0 
+LABEL maintainer="msa.myinno@gmail.com"
+ 
+
+EXPOSE 22 8084
+
+#ENTRYPOINT ["/usr/sbin/sshd","-D"]
+
