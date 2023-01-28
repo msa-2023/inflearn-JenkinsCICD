@@ -15,7 +15,8 @@
 - <span class=burk>회사 네크워크 확경에서 발생하는 "x509" 오류는 "https://auth.docker.io"예외 등록 후 정상 처리됨</span>
   - 이수정(20009791@partner.....) 현장대리인에게 요청함
 - ![](images/A01-DevOps-SystemConfig.png)
-## 1. Jenkins 서버 생성(개별) 
+- 정리문서 관리: https://github.com/msa-2023/inflearn-JenkinsCICD.git
+## 1. Jenkins 서버 생성(개별 , 2. docker-compose로 실행 권고) 
 Docker기반으로 Jenkins 설정
 - 원본참조: https://www.jenkins.io/doc/book/installing/docker/
 - 이 부분은 실행하지 않아도 됨 (2번에서 docker-compose로 수행함)
@@ -114,8 +115,10 @@ Docker기반으로 Jenkins 설정
 ## 2. Jenkins 환경구성(docker-compose)
 
 ### 2.1 파일 구조
-- Root Dir: d:\APP\@inflearn\202212-JenkinsCICD\envsystem\
-- 파일의 실 내용은 "## C" 참조
+- 환경설정에 추가한 내용
+  - JENKINS_ROOT=d:\APP\@inflearn\202212-JenkinsCICD
+- Root Dir: %JENKINS_ROOT%\envsystem\
+- 파일의 내용은 "## C" 참조
 - docker-compose-jenkins.yml
   - jenkins, ssh등 필요한 서버를 한번에 생성함
 - jenkins/Dockerfile
@@ -139,6 +142,7 @@ Docker기반으로 Jenkins 설정
     $ ssh -p 2202 root@localhost
     ```
    - jenkins 서버는 ssh 데몬이 미 실행중 ( '/usr/sbin/sshd -D' 실행 후 테스트)
+     - 2023-01-27 linux에서 sshd 기동되지 않음
    - docker 재 생성으로 ssh key 관련 오류가 발생하면 "c:\Users\Administrator\.ssh\known_hosts"파일 삭제 후 다시 수행
 
 4. docker 프로세스 확인
