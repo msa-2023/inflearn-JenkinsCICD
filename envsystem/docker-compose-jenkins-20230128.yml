@@ -1,8 +1,5 @@
 version: '2'
 
-
-
-
 services:
   jenkins-docker:
     image: docker:dind
@@ -10,8 +7,8 @@ services:
 #    mem_reservation: 60m
     privileged: true
     volumes:
-      - ${DIRPATH}/jenkins_SHARE/certs:/certs/client
-      - ${DIRPATH}/jenkins_SHARE/var:/var/jenkins_home
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/var:/var/jenkins_home
     ports:
       - 2376:2376
     networks:
@@ -48,9 +45,9 @@ services:
 #      - JAVA_OPTS="-Xmx700m"
       - TZ=Asia/Seoul
     volumes:
-      - ${DIRPATH}/jenkins_SHARE/certs:/certs/client
-      - ${DIRPATH}/jenkins_SHARE/var:/var/jenkins_home
-      - ${DIRPATH}/jenkins_SHARE/home:/home
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/var:/var/jenkins_home
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/home:/home
     restart: on-failure
 
 ## docker + SSH + Ubuntu
@@ -70,5 +67,5 @@ services:
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
     volumes:
-      - ${DIRPATH}/jenkins_SHARE/certs:/certs/client
-      - ${DIRPATH}/jenkins_SHARE/sshhome:/home      
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/certs:/certs/client
+      - /d/APP/@inflearn/202212-JenkinsCICD/jenkins_SHARE/sshhome:/home      
