@@ -17,7 +17,9 @@
 - ![](images/A01-DevOps-SystemConfig.png)
 - 정리문서 관리: https://github.com/msa-2023/inflearn-JenkinsCICD.git
 ## 1. Jenkins 서버 생성(개별 , 2. docker-compose로 실행 권고) 
-Docker기반으로 Jenkins 설정
+이부분은 눈으로만 확인하고 (목차 2. Jenkins 환경구성(docker-compose)로 이도 )
+
+Docker기반으로 Jenkins 설정 ( )
 - 원본참조: https://www.jenkins.io/doc/book/installing/docker/
 - 이 부분은 실행하지 않아도 됨 (2번에서 docker-compose로 수행함)
 
@@ -117,8 +119,15 @@ Docker기반으로 Jenkins 설정
 ### 2.1 파일 구조
 - 환경설정에 추가한 내용
   - JENKINS_ROOT=d:\APP\@inflearn\202212-JenkinsCICD
+  - ".env"파일에 docker-compose관련 환경변수 추가
+ 
+      ```shell
+      #centos에 적용한 내용
+      # /home/myinno/inflearn-JenkinsCICD/envsystem/.env
+      [myinno@localhost envsystem]$ cat .env
+      DIRPATH=/home/myinno/inflearn-JenkinsCICD
+      ```
 - Root Dir: %JENKINS_ROOT%\envsystem\
-- 파일의 내용은 "## C" 참조
 - docker-compose-jenkins.yml
   - jenkins, ssh등 필요한 서버를 한번에 생성함
 - jenkins/Dockerfile
@@ -127,10 +136,38 @@ Docker기반으로 Jenkins 설정
   - ubuntu+ssh + docker  (테스트 용)
 - UbuntuSshd/Dockerfile-tomcat
   - DooD로 수행할 Tomcat서버 정보: A06에서 사용함
+
+- 참고(centos)
+  - windows의 "docker-compose"와 동일한 방법으로 linux에서 사용하기 위하여 alias 등록함
+
+      ```shell
+      alias docker-compose="docker compose"
+      ```
+  - Host가 Centos8에서 수행하면 "ssh-docker"의 build오류 발생
+    - 'apt-get update에서 오류 발생'
+      ```shell
+      --------------------
+        15 |     RUN dpkg --configure -a
+        16 |     RUN apt-get clean
+        17 | >>> RUN apt-get update
+        18 |     #
+        19 |     # SSH □□ġ
+      --------------------
+      ERROR: failed to solve: process "/bin/sh -c apt-get update" did not complete successfully: exit code: 100
+      ```
+    - 조치 내용 (https://stackoverflow.com/questions/38002543/apt-get-update-returned-a-non-zero-code-100)
+
+      ```shell
+      #FROM ubuntu:18.04
+      FROM  ubuntu:focal-20211006
+      ```
+
+
 ### 2.2 수행하기
 1. 빌드
     ```shell
-    $ cd /d/APP/@inflearn/202212-JenkinsCICD/envsystem
+    $ cd /d/APP/@inflearn/202212-JenkinsCICD/envsystem 
+     (linux)/home/myinno/inflearn-JenkinsCICD/envsystem
     $ docker-compose -f docker-compose-jenkins.yml build
     ```
 2. Run
@@ -142,8 +179,8 @@ Docker기반으로 Jenkins 설정
     $ ssh -p 2202 root@localhost
     ```
    - jenkins 서버는 ssh 데몬이 미 실행중 ( '/usr/sbin/sshd -D' 실행 후 테스트)
-     - 2023-01-27 linux에서 sshd 기동되지 않음
-   - docker 재 생성으로 ssh key 관련 오류가 발생하면 "c:\Users\Administrator\.ssh\known_hosts"파일 삭제 후 다시 수행
+
+   - docker 재 생성으로 ssh key 관련 오류가 발생하면 "c:\Users\Administrator\.ssh\known_hosts"파일 삭제 후 다시 수행 (docker 이미지가 다시 빌드되면 이전 서버의 ssh 관련 key값 변경으로 오류 발생)
 
 4. docker 프로세스 확인
    - ssh로 접속하면 오류, 직접 terminal로 접속해서 테스트 

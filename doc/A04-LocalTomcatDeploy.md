@@ -31,22 +31,24 @@ Tomcat에 배포하기
     https://jdk.java.net/11/
     ```
 3. Tomcat 설정 변경
-  -  접근 엑세스 변경  (모두에서 접속하도록 수정: 주석 처리함)   2개의 파일을 동일하게 수정
-  - %TOMCAT_HOME%\webapps\host-manager\META-INF\context.xml
-  - %TOMCAT_HOME%\webapps\manager\META-INF\context.xml
-      ```shell
+   -  접근 엑세스 변경  (모두에서 접속하도록 수정: 주석 처리함)   2개의 파일을 동일하게 수정
+     - "%TOMCAT_HOME%\webapps\host-manager\META-INF\context.xml"
+     - "%TOMCAT_HOME%\webapps\manager\META-INF\context.xml"
+
+      ```shell   
+       수정 내용:
        <!--
          <Valve className="org.apache.catalina.valves.RemoteAddrValve"
                 allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />
        -->
        ``` 
-  - 포트 변경
+   - 포트 변경
       ```shell
        포트 변경 
        %TOMCAT_HOME%\conf\server.xml   ==> 8081
        ```
-  - 유저 등록
-    -  %TOMCAT_HOME%\conf\tomcat-users.xml (마지막 부분)
+   - 유저 등록
+     -  "%TOMCAT_HOME%\conf\tomcat-users.xml" (마지막 부분)
       ```xml
         <role rolename="manager-gui"/>
         <role rolename="manager-script"/>
@@ -63,7 +65,7 @@ Tomcat에 배포하기
     
     ```
 5. 기타
-  -  webapps
+   -  webapps
 
 ### 1.2 Jenkins Tomcat 관련 설정
 1. Setup Tomcat Plugin
@@ -105,8 +107,9 @@ Post-build Actions
   - http://10.250.141.157:8081/hello-world/
 
 ### 2.3 작업공간(workspace 확인하기)
+
 빌드하면서 생성한 workspace 공간 확인
--  d:\APP\@inflearn\202212-JenkinsCICD\jenkins_SHARE\var\jobs\My-Third-Project\workspace\
+-  d:\APP\@inflearn\inflearn-JenkinsCICD\jenkins_SHARE\var\jobs\My-Third-Project\workspace\
 - ![](images/A04-workspace.png)
 ## A. 기존 프로젝트를 Copy해 오기
 ![](images/A04_CopyProject.png)
