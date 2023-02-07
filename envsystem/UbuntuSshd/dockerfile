@@ -1,27 +1,43 @@
-FROM ubuntu:18.04   
-#FROM jenkins/jenkins:2.346.3-jdk11
-MAINTAINER myinno(msa.myinno@gmail.com)
+FROM ubuntu:18.04
+#FROM ubuntu:focal-20221130
+#FROM ubuntu:latest
 
+MAINTAINER "myinno(msa.myinno@gmail.com)"
 
 ##1 Docker 설치(https://docs.docker.com/engine/install/ubuntu/)
-USER root
-RUN apt-get update && apt-get install -y ca-certificates gnupg lsb-release curl vim
-RUN mkdir -p /etc/apt/keyrings
+
+RUN apt-get update --fix-missing -qq && apt-get install -qqy \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    lxc \
+    iptables 
+
+RUN apt-get update --fix-missing -qq && apt-get install -qqy \
+	vim \
+	gnupg \
+	lsb-release
+
+RUN mkdir -p /etc/apt/keyrings 
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
 RUN echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-RUN apt-get update && apt-get install -y docker-ce-cli
+  $(lsb_release -cs) stable" |tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-##2 Docker 설치(기존 jenkins 파일 참조)
+RUN apt-get update --fix-missing -qq && apt-get install -qqy \
+#	docker-ce-cli (아래로 변경한 이유는 ssh로 접근했을때 docker ps에서 오류 발생해서 변경함)
+    docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin  
+
+#2 Docker 설치(기존 jenkins 파일 참조)
 #USER root
-#RUN apt-get update && apt-get install -y lsb-release
+#RUN apt-get update && apt-get install -y ca-certificates gnupg lsb-release curl vim
 #RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
-#https://download.docker.com/linux/debian/gpg
+#    https://download.docker.com/linux/debian/gpg
 #RUN echo "deb [arch=$(dpkg --print-architecture) \
-#signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
-#https://download.docker.com/linux/debian \
-#$(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+#    signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+#    https://download.docker.com/linux/debian \
+#    $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
 #RUN apt-get update && apt-get install -y docker-ce-cli
 
 
@@ -53,7 +69,7 @@ RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 COPY ./Dockerfile-tomcat /root/.
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
-
+#CMD ["/usr/sbin/sshd", "-D"]
+ENTRYPOINT ["/lib/systemd/systemd"]
 
 

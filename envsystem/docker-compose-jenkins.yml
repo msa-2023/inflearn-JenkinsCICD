@@ -1,11 +1,9 @@
 version: '2'
 
-
-
-
 services:
   jenkins-docker:
     image: docker:dind
+    container_name: dind
 #    mem_limit: 100m
 #    mem_reservation: 60m
     privileged: true
@@ -26,10 +24,11 @@ services:
 ## jenkins-blueocean
   jenkins-blueocean:
     build: jenkins
+    container_name: jenkins
 #    command: /usr/sbin/sshd -D
     mem_limit: 1024m
     mem_reservation: 600m
-#    privileged: true
+    privileged: true
 #    networks:
 #      - jenkins
 #    networks:
@@ -57,11 +56,15 @@ services:
   ssh-docker:
     build: UbuntuSshd
     container_name: ssh-docker
-    command: /usr/sbin/sshd -D
+#    command: /usr/sbin/sshd -D
 #    mem_limit: 550M
     privileged: true
 #    networks:
 #      - jenkins
+#    networks:
+#      default:
+#        aliases:
+#          - docker
     ports:
       - '2202:22'
       - '8083:8080'
@@ -69,6 +72,8 @@ services:
       - DOCKER_HOST=tcp://docker:2376
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
+      - TZ=Asia/Seoul
     volumes:
       - ${DIRPATH}/jenkins_SHARE/certs:/certs/client
       - ${DIRPATH}/jenkins_SHARE/sshhome:/home      
+#      - /var/run/docker.sock:/var/run/docker.sock

@@ -31,7 +31,9 @@ Remote서버에 소스 배포
 
    - Dashboard  >  Configure System
    - ![](images/A06-1-SSH-Connection.png)
-
+     - 비밀번호 설정 방법: "user Password .."를 선택하고 password 입력 
+     - ip, port는 "jenkins --> ssh-docker"로 도커에서 도커 접속이므로 "ssh-docker"로 입력하고, port=22로 수정
+     - jenkins 서버에 접속하여 ssh-docker로 ssh로 접속하다는 가정으로 진행
      ```shell
      Manage Jenkins > Configure System > SSH Server
      - Add SSH Servers
@@ -95,7 +97,7 @@ Remote서버에 소스 배포
 
 
 1. Remote 서버에 Dockerfile 생성(Docker이미지에 추가했음)
-
+   - /root/Dockerfile-tomcat
    ```shell
    FROM tomcat:9.0
    LABEL myinno.authors="msa.myinno@gmail.com"
@@ -149,14 +151,17 @@ docker 이미지 직접 생성해 보기
 1. docker 생성을 jenkins에서 수행
 
     ```shell
-    docker build -t docker-server -f Dockerfile-tomcat; 
+    docker build -t docker-server -f Dockerfile-tomcat .; 
     docker run -d --rm -p 8080:8080 --name mytomcat docker-server:latest;
     ```
    - ![](images/A06-DockerJenkinsShell.png)
+   - 여러번 실행하면 오류: 이전 이미지를 삭제하고 진행하는 부분은 다음 chapter에서 진행함
 
 2. 현제 시점의 문제점 (2023-01-08)
    - docker-compose 버전으로 생성한 경우는 
      - jenkins 도커에서 ssh로 'ssh-docker'로 접속하면 "docker ps"명령 실행 안됨
      - 손으로 'ssh-docker'에서 docker를 생성하면, 직접 해당 도커에 접속하면 정상 동적 학인되나, 포트 forward가 되지 않음
-
-
+3. 2번 문제는 해결됨 (2023-02-07)
+   - ssh-docker의 이미지 생성 방법 변경
+   - envsystem\UbuntuSshd\dockerfile
+   - 핵심 부분:   "docker-ce-cli"만 설치하던 부분을 "docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin "로 변경
