@@ -11,21 +11,21 @@ Jupter Bookt 사용법 정리.
 
 
 
-2022-01 새로인 정리 시작
+2022-01 새로이이 정리 시작
 
 원본: https://jupyterbook.org/
-- 대 부분은 google 변역기로.
-- 일부는 직접 수행하고 테스트한 내용 추가
+- 대부분은 google 변역기로.
+- 일부는 직접 수행하고 테스트 한 내용 추가
 
 
 
 ## 사전 조건
 
-파이센이 설치 되어 있어야 함
-- "c:\pip" 수행 가능한 상태
+파이썬이 설치되어 있어야 함
+- "C:\pip" 수행 가능한 상태
 
 수정 Edit
-- VS Code
+- Visual Studio Code
 - Intellij : 지금 사용중인 도구
 
 ### VisualStudioCode 설치

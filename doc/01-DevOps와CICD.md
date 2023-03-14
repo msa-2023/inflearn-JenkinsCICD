@@ -93,7 +93,7 @@ https://docs.microsoft.com/ko-kr/dotnet/architecture/cloud-native/definition
 ### Cloud Native - DevOps    
 
 - 엔지니어가, 프로그래밍하고, 빌드하고, 직접 시스템에 배포 및 서비스를 RUN
-- 사용자와 끊임 없이 Interaction하면서 서비스를 개선해 나가는 일련의 과정, 문화
+- 사용자와 끊임없이 Interaction하면서 서비스를 개선해 나가는 일련의 과정, 문화
 - ![](images/01-10.png)
 
 ### Cloud Native - DevOps

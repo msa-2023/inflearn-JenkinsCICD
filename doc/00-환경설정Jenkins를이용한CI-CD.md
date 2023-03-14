@@ -8,7 +8,7 @@
 
 # 기본 환경
 ## 제공 파일
-강의에 상요한 샘플 프로젝트 및 스크립트는 아래에서 확인하실 수 있습니다.
+강의에 사용한 샘플 프로젝트 및 스크립트는 아래에서 확인하실 수 있습니다.
 ```shell
 $ cd download
 $ git clone https://github.com/joneconsulting/cicd-web-project

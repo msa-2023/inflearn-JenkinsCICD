@@ -17,7 +17,7 @@
 - ![](images/A01-DevOps-SystemConfig.png)
 - 정리문서 관리: https://github.com/msa-2023/inflearn-JenkinsCICD.git
 ## 1. Jenkins 서버 생성(개별 , 2. docker-compose로 실행 권고) 
-이부분은 눈으로만 확인하고 (목차 2. Jenkins 환경구성(docker-compose)로 이도 )
+이 부분은 눈으로만 확인하고 (목차 2. Jenkins 환경구성(docker-compose)로 이도 )
 
 Docker기반으로 Jenkins 설정 ( )
 - 원본참조: https://www.jenkins.io/doc/book/installing/docker/
@@ -53,7 +53,7 @@ Docker기반으로 Jenkins 설정 ( )
    - <span class=burk>실행후 Docker의 "Environment"  </span>
      - DOCKER_TLS_CERTDIR: /certs  확인 필요
      - git bash 창에서 수행하면 "C:/Program Files/Git/certs"로 설정됨
-     - 왜 설정이 안되는지는 확인 안됨
+     - 왜 설정이 안 되는지는 확인 안됨
 
 3. Jenkins Docker 생성
    - Dockerfile (d:\APP\@inflearn\202212-JenkinsCICD\환경구성\jenkins\Dockerfile)
